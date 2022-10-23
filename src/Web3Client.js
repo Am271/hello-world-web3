@@ -4,7 +4,7 @@ import GreetBuild from 'contracts/Greet.json';
 
 let selectedAccount;
 let greetContract;
-const providerUrl = 'http://localhost:7545';
+const providerUrl = 'ws://localhost:7545';
 
 export const init = async () => {
     let provider = window.ethereum;
@@ -33,8 +33,15 @@ export const init = async () => {
     const networkId = await web3.eth.net.getId();
 
     greetContract = new web3.eth.Contract(GreetBuild.abi, GreetBuild.networks[networkId].address);
+
+    greetContract.events.newMessage({}, (err, event_) => {
+      console.log(event_.returnValues.msg);
+    })
+    .on('error', function(error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
+        console.log(error)
+    });
 }
 
 export const greet = () => {
-    return greetContract.methods.greet().send({from: selectedAccount});
+  return greetContract.methods.greet().send({from: selectedAccount});
 }
