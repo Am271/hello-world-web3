@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { init, greet } from './Web3Client'
+import { init, greet, getval } from './Web3Client'
 
 function App() {
 
@@ -13,12 +13,23 @@ function App() {
     });
   }
 
+  const getvalx = () => {
+    getval()
+    .then((tx) => {
+      console.log(tx);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   useEffect(() => {
     init();
   }, []);
 
   return <div className='App'>
     <button onClick={() => greetx()}> Greet </button>
+    <button onClick={() => getvalx()}> Get Value </button>
   </div>;
 }
 

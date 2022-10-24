@@ -40,8 +40,14 @@ export const init = async () => {
     .on('error', function(error, receipt) { // If the transaction was rejected by the network with a receipt, the second parameter will be the receipt.
         console.log(error)
     });
+
+    greetContract.methods.setValue(75).send({from: selectedAccount});
 }
 
 export const greet = () => {
   return greetContract.methods.greet().send({from: selectedAccount});
+}
+
+export const getval = () => {
+  return greetContract.methods.getValue().call({from: selectedAccount});
 }
